@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AiService} from '../ai.service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-chat',
   imports: [
-    FormsModule
+    FormsModule,
+    JsonPipe
   ],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
@@ -24,12 +26,18 @@ export class Chat {
 
     this.ai.ask(this.msg).subscribe({
       next: (res: { answer: string }) => {
-        this.answer = res.answer;
+        //console.log("response",res.answer);
+        this.answer = (res.answer ?? '').trim();
+       console.log(this.answer)
         this.isLoading = false;
       },
       error: (err) => {
-        if (err?.status === 429) this.answer = 'Շատ արագ հարցումներ են գնում․ փորձիր 10-20 վրկ հետո։';
-        this.answer = 'Սխալ տեղի ունեցավ 😕';
+        if (err?.status === 429) {
+          this.answer = 'Շատ արագ հարցումներ են գնում․ փորձիր 10-20 վրկ հետո։';
+        } else {
+          this.answer = 'Սխալ տեղի ունեցավ 😕';
+        }
+        console.error('Full error:', err);
         this.isLoading = false;
       }
     });
