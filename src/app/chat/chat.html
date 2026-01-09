@@ -1,0 +1,97 @@
+<div class="mx-auto max-w-2xl p-4">
+  <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+    <div class="flex items-center justify-between gap-3 border-b px-5 py-4
+            bg-gradient-to-r from-indigo-600 to-violet-600 text-white alig">
+      <div>
+        <h2 class="text-lg font-semibold">AI Հարց ու Պատասխան</h2>
+        <p class="text-sm text-indigo-100">Գրիր հարցդ ներքևում</p>
+      </div>
+
+      @if (isLoading) {
+        <span
+          class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-slate-500"></span>
+          Մշակվում է…
+        </span>
+      }
+    </div>
+
+
+    <div class="space-y-4 px-5 py-5">
+
+      @if (msg.trim()) {
+        <div class="flex justify-end">
+          <div class="max-w-[85%] rounded-2xl
+              bg-gradient-to-r from-indigo-600 to-violet-600
+              px-4 py-3 text-sm text-white shadow-lg">
+            {{ msg }}
+          </div>
+        </div>
+      }
+
+
+      @if (answer) {
+        <div class="flex justify-start">
+          <div class="max-w-[85%] rounded-2xl
+              bg-emerald-50 text-emerald-900
+              ring-1 ring-emerald-200
+              px-4 py-3 text-sm shadow">
+    <pre class="whitespace-pre-wrap break-words font-sans leading-relaxed">
+{{ answer }}
+    </pre>
+          </div>
+        </div>
+      }
+
+
+      @if (!answer && !isLoading) {
+        <div class="rounded-xl bg-slate-50 px-4 py-4 text-sm text-slate-600 ring-1 ring-slate-200">
+          Օրինակ հարց՝ <span class="font-medium text-slate-800">«Ինչպե՞ս optimize անեմ Angular app-ը»</span>
+        </div>
+      }
+    </div>
+
+
+    <div class="border-t border-slate-200 p-4">
+      <div class="flex items-center gap-3">
+        <div class="flex-1">
+          <label class="mb-2 block text-xs font-medium text-slate-600">Քո հարցը</label>
+
+          <textarea
+            [(ngModel)]="msg"
+            (keydown.enter)="onEnter($event)"
+            rows="2"
+            class="w-full resize-none rounded-xl
+         border border-indigo-300
+         bg-indigo-50
+         px-4 py-3 text-sm text-slate-900
+         shadow-sm outline-none transition
+         placeholder:text-indigo-400
+         focus:border-indigo-600
+         focus:ring-4 focus:ring-indigo-200"
+            placeholder="Գրիր հարցդ..."
+          ></textarea>
+
+
+          <p class="mt-2 text-xs text-slate-500">
+            Enter՝ ուղարկելու համար, Shift+Enter՝ նոր տող
+          </p>
+        </div>
+
+        <button
+          (click)="send()"
+          [disabled]="isLoading || !msg.trim()"
+          class="inline-flex h-[46px] items-center justify-center gap-2 rounded-xl
+         bg-gradient-to-r from-indigo-600 to-violet-600
+         px-5 text-sm font-semibold text-white shadow-lg
+         hover:from-indigo-500 hover:to-violet-500
+         active:scale-[0.98]
+         disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          Ուղարկել
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
